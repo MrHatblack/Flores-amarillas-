@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Flores y Amor 🌼</title>
+  <style>
+    body {
+      background: linear-gradient(#87CEEB, #ffffff);
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Comic Sans MS', cursive, sans-serif; /* estilo cartoon */
+    }
+
+    /* Flores cayendo */
+    .flower {
+      position: absolute;
+      pointer-events: none;
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-60px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Mensaje principal */
+    #message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 3em;
+      font-weight: bold;
+      text-align: center;
+      text-shadow: 2px 2px 5px #000;
+    }
+
+    /* Mensaje TE AMO */
+    #heartMessage {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.5);
+      color: red;
+      font-size: 4em;
+      font-weight: bold;
+      text-align: center;
+      opacity: 0; /* empieza invisible */
+      animation: appearHeart 1.5s forwards;
+      animation-play-state: paused; /* activado desde JS */
+    }
+
+    @keyframes appearHeart {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+      50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    /* Latido del corazón */
+    @keyframes beat {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      25% { transform: translate(-50%, -50%) scale(1.1); }
+      50% { transform: translate(-50%, -50%) scale(1.2); }
+      75% { transform: translate(-50%, -50%) scale(1.1); }
+    }
+
+    .beat {
+      animation: beat 1s infinite;
+    }
+  </style>
+</head>
+<body>
+
+<div id="message"></div>
+<div id="heartMessage">TE AMO ❤️</div>
+
+<script>
+  const flowers = ['FLORES 1.png', 'FLORES 2.png', 'FLORES 3.png']; // tus imágenes
+  const messageText = "🌼 Eres increíble y me haces sonreír todos los días 🌼"; // mensaje principal
+  const messageElement = document.getElementById('message');
+  const heartElement = document.getElementById('heartMessage');
+  let index = 0;
+
+  // Función máquina de escribir
+  function typeWriter() {
+    if (index < messageText.length) {
+      messageElement.innerHTML += messageText.charAt(index);
+      index++;
+      setTimeout(typeWriter, 100); // velocidad de escritura
+    } else {
+      // Después de 500ms, aparece el corazón y empieza a latir
+      setTimeout(() => {
+        heartElement.style.animationPlayState = 'running';
+        heartElement.classList.add('beat');
+      }, 500);
+    }
+  }
+
+  // Función para crear flores
+  function createFlower() {
+    const flower = document.createElement('img');
+    flower.src = flowers[Math.floor(Math.random() * flowers.length)];
+    flower.classList.add('flower');
+    flower.style.left = Math.random() * window.innerWidth + 'px';
+    flower.style.width = (30 + Math.random() * 40) + 'px';
+    flower.style.animationDuration = (4 + Math.random() * 6) + 's';
+    document.body.appendChild(flower);
+
+    setTimeout(() => flower.remove(), 10000);
+  }
+
+  // Iniciar animaciones
+  setInterval(createFlower, 400);
+  typeWriter(); // empieza el mensaje principal
+</script>
+
+</body>
+</html>
